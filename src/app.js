@@ -14,6 +14,17 @@ app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 app.use(morgan('dev'));
 
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Social App API is running",
+    version: "1.0.0"
+  });
+});
+
+
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'social-app-api' });
 });
