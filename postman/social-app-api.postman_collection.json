@@ -1,0 +1,67 @@
+{
+  "info": {
+    "name": "Social App API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:5000/api/v1"},
+    {"key": "token", "value": ""},
+    {"key": "postId", "value": ""},
+    {"key": "userId", "value": ""}
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Signup",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw":"{\n  \"first_name\": \"Shola\",\n  \"last_name\": \"Developer\",\n  \"username\": \"shola_dev\",\n  \"email\": \"shola@example.com\",\n  \"password\": \"password123\"\n}"},
+            "url": {"raw":"{{baseUrl}}/auth/signup","host":["{{baseUrl}}"],"path":["auth","signup"]}
+          }
+        },
+        {
+          "name": "Signin",
+          "request": {
+            "method": "POST",
+            "header": [{"key":"Content-Type","value":"application/json"}],
+            "body": {"mode":"raw","raw":"{\n  \"email\": \"shola@example.com\",\n  \"password\": \"password123\"\n}"},
+            "url": {"raw":"{{baseUrl}}/auth/signin","host":["{{baseUrl}}"],"path":["auth","signin"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Public feed",
+          "request": {"method":"GET","url":{"raw":"{{baseUrl}}/posts?page=1&limit=20&sort=-createdAt","host":["{{baseUrl}}"],"path":["posts"],"query":[{"key":"page","value":"1"},{"key":"limit","value":"20"},{"key":"sort","value":"-createdAt"}]}}
+        },
+        {
+          "name": "Create draft",
+          "request": {"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\n  \"title\": \"My first API post\",\n  \"content\": \"Hello from the social app API.\",\n  \"tags\": [\"nodejs\", \"mongodb\"]\n}"},"url":{"raw":"{{baseUrl}}/posts","host":["{{baseUrl}}"],"path":["posts"]}}
+        },
+        {
+          "name": "Publish post",
+          "request": {"method":"PATCH","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"state\":\"published\"}"},"url":{"raw":"{{baseUrl}}/posts/{{postId}}/state","host":["{{baseUrl}}"],"path":["posts","{{postId}}","state"]}}
+        },
+        {
+          "name": "Like post",
+          "request": {"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/posts/{{postId}}/like","host":["{{baseUrl}}"],"path":["posts","{{postId}}","like"]}}
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {"name":"Me","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/users/me","host":["{{baseUrl}}"],"path":["users","me"]}}},
+        {"name":"Following","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/users/me/following?page=1&limit=20","host":["{{baseUrl}}"],"path":["users","me","following"],"query":[{"key":"page","value":"1"},{"key":"limit","value":"20"}]}}},
+        {"name":"Followers","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/users/me/followers?page=1&limit=20","host":["{{baseUrl}}"],"path":["users","me","followers"],"query":[{"key":"page","value":"1"},{"key":"limit","value":"20"}]}}},
+        {"name":"My posts","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":{"raw":"{{baseUrl}}/users/me/posts?state=draft&page=1&limit=20","host":["{{baseUrl}}"],"path":["users","me","posts"],"query":[{"key":"state","value":"draft"},{"key":"page","value":"1"},{"key":"limit","value":"20"}]}}
+      ]
+    }
+  ]
+}
