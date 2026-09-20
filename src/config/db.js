@@ -1,15 +1,8 @@
-const mongoose = require('mongoose');
-const { mongoUri } = require('./env');
+const mongoose = require("mongoose");
 
-async function connectDB(uri = mongoUri) {
-  await mongoose.connect(uri);
-  return mongoose.connection;
-}
+const connectDB = async () => {
+  await mongoose.connect(process.env.MONGODB_URI);
+  console.log("MongoDB connected successfully");
+};
 
-async function disconnectDB() {
-  if (mongoose.connection.readyState !== 0) {
-    await mongoose.disconnect();
-  }
-}
-
-module.exports = { connectDB, disconnectDB };
+module.exports = connectDB;
